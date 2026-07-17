@@ -1,0 +1,73 @@
+{
+  "name": "chatgpt-for-linux",
+  "productName": "ChatGPT for Linux",
+  "version": "0.1.0",
+  "description": "ChatGPT for Linux (unofficial wrapper around chatgpt.com)",
+  "homepage": "https://github.com/cleyton1986/chatgpt-for-linux",
+  "main": "dist/index.js",
+  "scripts": {
+    "dist": "rm -rf dist && tsc",
+    "watch": "tsc -w",
+    "lint": "eslint -c .eslintrc --ext .ts ./src",
+    "start": "yarn dist && electron .",
+    "build": "yarn dist && electron-builder"
+  },
+  "author": {
+    "name": "Cleyton Alves",
+    "email": "cleyton1986@gmail.com"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "electron-store": "^8.1.0",
+    "electron-updater": "^6.3.9"
+  },
+  "devDependencies": {
+    "electron": "^33.2.0",
+    "electron-builder": "^25.1.8",
+    "typescript": "^5.5.0"
+  },
+  "build": {
+    "appId": "github.cleyton1986.ChatGPTForLinux",
+    "directories": {
+      "output": "./build",
+      "buildResources": "./build-resources"
+    },
+    "files": [
+      "dist",
+      "package.json"
+    ],
+    "extraFiles": [
+      "data"
+    ],
+    "publish": {
+      "provider": "github",
+      "owner": "cleyton1986",
+      "repo": "chatgpt-for-linux"
+    },
+    "protocols": {
+      "name": "ChatGPT for Linux",
+      "schemes": ["chatgpt"]
+    },
+    "linux": {
+      "target": [
+        { "target": "AppImage", "arch": ["x64"] },
+        { "target": "deb", "arch": ["x64"] },
+        { "target": "rpm", "arch": ["x64"] },
+        { "target": "pacman", "arch": ["x64"] }
+      ],
+      "category": "Utility",
+      "executableName": "chatgpt-for-linux"
+    },
+    "appImage": {
+      "artifactName": "${name}-${version}.${ext}"
+    },
+    "mac": {
+      "category": "public.app-category.productivity"
+    },
+    "win": {
+      "target": [
+        { "target": "NSIS", "arch": ["x64"] }
+      ]
+    }
+  }
+}

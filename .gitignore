@@ -1,0 +1,15 @@
+# Node
+node_modules/
+
+# Javascript transpilation
+dist/
+
+# Electron builder output
+build/
+
+# Assets de trabalho / referências pessoais - NUNCA deve ir para o repositório
+.docs/
+
+# Diversos
+*.log
+.DS_Store
