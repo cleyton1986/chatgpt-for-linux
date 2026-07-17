@@ -1,0 +1,106 @@
+import { BrowserWindow, Event, Input } from "electron";
+import Module from "./module";
+
+interface Quittable {
+  quit(): void;
+  reload(): void;
+  newChat(): void;
+}
+
+interface ClickAction {
+  control?: boolean;
+  shift?: boolean;
+  keys: Array<string>;
+  action: () => void;
+}
+
+/**
+ * Modulo que registra e gerencia atalhos de teclado.
+ */
+export default class HotkeyModule extends Module {
+  private readonly actions = new Array<ClickAction>();
+
+  constructor(
+    private readonly app: Quittable,
+    private readonly window: BrowserWindow
+  ) {
+    super();
+  }
+
+  public override beforeLoad() {
+    this.registerHotkeys();
+    this.registerListeners();
+  }
+
+  public add(...clickActions: Array<ClickAction>) {
+    clickActions.forEach((action) => this.actions.push(action));
+  }
+
+  private onInput(event: Event, input: Input) {
+    this.actions.forEach((clickAction) => {
+      const shiftMatches =
+        clickAction.shift === undefined || input.shift === clickAction.shift;
+      if (
+        input.control === clickAction.control &&
+        shiftMatches &&
+        clickAction.keys.includes(input.key.toUpperCase())
+      ) {
+        clickAction.action();
+        event.preventDefault();
+      }
+    });
+  }
+
+  private registerHotkeys() {
+    this.add(
+      {
+        control: true,
+        keys: ["+"],
+        action: () => {
+          if (this.window.webContents.getZoomFactor() < 3)
+            this.window.webContents.zoomLevel += 1;
+        },
+      },
+      {
+        control: true,
+        keys: ["0"],
+        action: () => this.window.webContents.setZoomLevel(0),
+      },
+      {
+        control: true,
+        keys: ["-"],
+        action: () => {
+          if (this.window.webContents.getZoomFactor() > 0.5)
+            this.window.webContents.zoomLevel -= 1;
+        },
+      },
+      {
+        control: true,
+        keys: ["R"],
+        action: () => this.app.reload(),
+      },
+      {
+        control: true,
+        keys: ["W"],
+        action: () => this.window.hide(),
+      },
+      {
+        control: true,
+        keys: ["Q"],
+        action: () => this.app.quit(),
+      },
+      {
+        control: true,
+        shift: true,
+        keys: ["O"],
+        action: () => this.app.newChat(),
+      }
+    );
+  }
+
+  private registerListeners() {
+    this.window.webContents.on("before-input-event", (event, input) =>
+      this.onInput(event, input)
+    );
+  }
+}
