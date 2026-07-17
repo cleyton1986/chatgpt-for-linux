@@ -57,9 +57,21 @@ It is intentionally a thin wrapper: no custom UI is injected into the ChatGPT pa
 
 <div align="center">
 
-| Main window | ChatGPT's own settings | Conversation | App settings (ours) |
-|:---:|:---:|:---:|:---:|
-| <img src="assets/image-1.png" alt="ChatGPT for Linux main window" width="240" /> | <img src="assets/image-2.png" alt="ChatGPT settings inside the wrapper" width="240" /> | <img src="assets/image-3.png" alt="A conversation in ChatGPT for Linux" width="240" /> | <img src="assets/image-4.png" alt="ChatGPT for Linux settings window" width="240" /> |
+**Main window**
+
+<img src="assets/image-1.png" alt="ChatGPT for Linux main window" width="600" />
+
+**ChatGPT's own settings**
+
+<img src="assets/image-2.png" alt="ChatGPT settings inside the wrapper" width="600" />
+
+**Conversation**
+
+<img src="assets/image-3.png" alt="A conversation in ChatGPT for Linux" width="600" />
+
+**App settings (ours)**
+
+<img src="assets/image-4.png" alt="ChatGPT for Linux settings window" width="600" />
 
 </div>
 

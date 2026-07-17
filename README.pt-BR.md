@@ -57,9 +57,21 @@ O ChatGPT tem apps oficiais para Windows, macOS, iOS e Android — mas **nenhum 
 
 <div align="center">
 
-| Janela principal | Configurações do próprio ChatGPT | Conversa | Configurações do app (nossas) |
-|:---:|:---:|:---:|:---:|
-| <img src="assets/image-1.png" alt="Janela principal do ChatGPT for Linux" width="240" /> | <img src="assets/image-2.png" alt="Configurações do ChatGPT dentro do wrapper" width="240" /> | <img src="assets/image-3.png" alt="Uma conversa no ChatGPT for Linux" width="240" /> | <img src="assets/image-4.png" alt="Janela de configurações do ChatGPT for Linux" width="240" /> |
+**Janela principal**
+
+<img src="assets/image-1.png" alt="Janela principal do ChatGPT for Linux" width="600" />
+
+**Configurações do próprio ChatGPT**
+
+<img src="assets/image-2.png" alt="Configurações do ChatGPT dentro do wrapper" width="600" />
+
+**Conversa**
+
+<img src="assets/image-3.png" alt="Uma conversa no ChatGPT for Linux" width="600" />
+
+**Configurações do app (nossas)**
+
+<img src="assets/image-4.png" alt="Janela de configurações do ChatGPT for Linux" width="600" />
 
 </div>
 
