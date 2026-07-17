@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Settings - ChatGPT for Linux</title>
+<style>
+  * { box-sizing: border-box; }
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #101010;
+    color: #ececec;
+  }
+  .topbar {
+    padding: 18px 24px 14px;
+    border-bottom: 1px solid #232323;
+    position: sticky; top: 0; background: #101010; z-index: 1;
+  }
+  .topbar h1 { font-size: 15px; font-weight: 600; margin: 0 0 2px; }
+  .topbar p { font-size: 12px; color: #8e8ea0; margin: 0; }
+
+  .content { padding: 18px 24px 28px; display: flex; flex-direction: column; gap: 14px; }
+
+  .card {
+    background: #191919;
+    border: 1px solid #262626;
+    border-radius: 14px;
+    padding: 18px;
+  }
+  .card-title {
+    font-size: 12px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: .04em; color: #9a9a9a; margin: 0 0 14px;
+  }
+
+  /* Preview */
+  .preview-row { display: flex; align-items: center; gap: 18px; }
+  .preview-tile {
+    width: 72px; height: 72px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .preview-tile.dark { background: #2b2b2b; }
+  .preview-tile.light { background: #e4e4e4; }
+  .preview-tile img { width: 44px; height: 44px; }
+  .preview-labels { display: flex; gap: 18px; font-size: 11px; color: #7a7a7a; }
+  .preview-labels span { width: 72px; text-align: center; }
+  .preview-group { display: flex; flex-direction: column; gap: 6px; }
+
+  /* Swatches */
+  .swatches { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .swatch {
+    width: 30px; height: 30px; border-radius: 50%;
+    border: 2px solid transparent; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; color: #666; transition: transform .1s ease;
+  }
+  .swatch:hover { transform: scale(1.08); }
+  .swatch.selected { border-color: #ececec; }
+  .swatch.white-swatch { border: 1px solid #444; }
+
+  .custom-row { display: flex; align-items: center; gap: 10px; margin-top: 14px; }
+  .custom-row input[type="color"] {
+    width: 30px; height: 30px; border: none; border-radius: 50%;
+    padding: 0; background: none; cursor: pointer;
+  }
+  .custom-row label { font-size: 12.5px; color: #b0b0b0; }
+
+  /* Segmented control (forma do fundo) */
+  .segmented {
+    display: flex; background: #101010; border: 1px solid #2a2a2a;
+    border-radius: 10px; padding: 3px; gap: 3px; margin-bottom: 14px;
+  }
+  .segmented button {
+    flex: 1; border: none; background: transparent; color: #9a9a9a;
+    font-size: 12.5px; padding: 8px 0; border-radius: 8px; cursor: pointer;
+    font-family: inherit;
+  }
+  .segmented button.active { background: #2d2d2d; color: #ececec; }
+
+  .bg-color-block { display: none; }
+  .bg-color-block.visible { display: block; }
+
+  /* Toggle switch */
+  .row { display: flex; align-items: center; justify-content: space-between; }
+  .row .row-label { font-size: 13px; color: #ececec; }
+  .row .row-hint { font-size: 11.5px; color: #8e8ea0; margin-top: 2px; }
+  .toggle {
+    position: relative; width: 40px; height: 22px; flex-shrink: 0;
+  }
+  .toggle input { opacity: 0; width: 0; height: 0; }
+  .toggle .track {
+    position: absolute; inset: 0; background: #333; border-radius: 999px;
+    cursor: pointer; transition: background .15s ease;
+  }
+  .toggle .track::before {
+    content: ""; position: absolute; width: 16px; height: 16px; left: 3px; top: 3px;
+    background: #ececec; border-radius: 50%; transition: transform .15s ease;
+  }
+  .toggle input:checked + .track { background: #10a37f; }
+  .toggle input:checked + .track::before { transform: translateX(18px); }
+
+  /* Select */
+  select {
+    width: 100%; background: #101010; color: #ececec;
+    border: 1px solid #2a2a2a; border-radius: 8px; padding: 9px 10px;
+    font-size: 13px; font-family: inherit; cursor: pointer;
+  }
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <h1 data-i18n="config.header">Appearance & settings</h1>
+    <p data-i18n="config.subheader">Customize the tray icon and app behavior.</p>
+  </div>
+
+  <div class="content">
+
+    <div class="card">
+      <div class="card-title" data-i18n="config.previewTitle">Preview</div>
+      <div class="preview-row">
+        <div class="preview-group">
+          <div class="preview-tile dark"><img id="preview-dark" src="" alt="" /></div>
+        </div>
+        <div class="preview-group">
+          <div class="preview-tile light"><img id="preview-light" src="" alt="" /></div>
+        </div>
+      </div>
+      <div class="preview-labels" style="margin-top:6px">
+        <span data-i18n="config.panelDark">Dark panel</span>
+        <span data-i18n="config.panelLight">Light panel</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title" data-i18n="config.strokeColorTitle">Icon color</div>
+      <div class="swatches" id="fg-swatches">
+        <div class="swatch white-swatch" data-color="#ffffff" data-color-key="color.white" style="background:#ffffff"></div>
+        <div class="swatch" data-color="#000000" data-color-key="color.black" style="background:#000000"></div>
+        <div class="swatch" data-color="#10a37f" data-color-key="color.green" style="background:#10a37f"></div>
+        <div class="swatch" data-color="#3b82f6" data-color-key="color.blue" style="background:#3b82f6"></div>
+        <div class="swatch" data-color="#a855f7" data-color-key="color.purple" style="background:#a855f7"></div>
+        <div class="swatch" data-color="#ef4444" data-color-key="color.red" style="background:#ef4444"></div>
+      </div>
+      <div class="custom-row">
+        <input type="color" id="fg-custom" value="#ffffff" />
+        <label for="fg-custom" data-i18n="config.customColor">Custom color</label>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title" data-i18n="config.bgTitle">Icon background</div>
+      <div class="segmented" id="shape-segmented">
+        <button data-shape="none" class="active" data-i18n="config.shapeNone">None</button>
+        <button data-shape="square" data-i18n="config.shapeSquare">Square</button>
+        <button data-shape="circle" data-i18n="config.shapeCircle">Round</button>
+      </div>
+
+      <div class="bg-color-block" id="bg-color-block">
+        <div class="swatches" id="bg-swatches">
+          <div class="swatch" data-color="#000000" data-color-key="color.black" style="background:#000000"></div>
+          <div class="swatch white-swatch" data-color="#ffffff" data-color-key="color.white" style="background:#ffffff"></div>
+          <div class="swatch" data-color="#10a37f" data-color-key="color.green" style="background:#10a37f"></div>
+          <div class="swatch" data-color="#3b82f6" data-color-key="color.blue" style="background:#3b82f6"></div>
+          <div class="swatch" data-color="#a855f7" data-color-key="color.purple" style="background:#a855f7"></div>
+        </div>
+        <div class="custom-row">
+          <input type="color" id="bg-custom" value="#10a37f" />
+          <label for="bg-custom" data-i18n="config.customColor">Custom color</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title" data-i18n="config.languageTitle">Language</div>
+      <select id="language-select"></select>
+      <div class="row-hint" style="margin-top:8px" data-i18n="config.languageHint">Changes apply immediately.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title" data-i18n="config.systemTitle">System</div>
+      <div class="row">
+        <div>
+          <div class="row-label" data-i18n="config.startWithSystem">Start with system</div>
+          <div class="row-hint" data-i18n="config.startWithSystemHint">Opens in background on login</div>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" id="autostart" />
+          <span class="track"></span>
+        </label>
+      </div>
+    </div>
+
+  </div>
+
+<script>
+  const state = { fgColor: "#ffffff", bgColor: null, bgShape: "none" };
+  let strings = {};
+
+  const fgSwatchesEl = document.getElementById("fg-swatches");
+  const bgSwatchesEl = document.getElementById("bg-swatches");
+  const fgCustom = document.getElementById("fg-custom");
+  const bgCustom = document.getElementById("bg-custom");
+  const shapeSegmented = document.getElementById("shape-segmented");
+  const bgColorBlock = document.getElementById("bg-color-block");
+  const previewDark = document.getElementById("preview-dark");
+  const previewLight = document.getElementById("preview-light");
+  const autostartToggle = document.getElementById("autostart");
+  const languageSelect = document.getElementById("language-select");
+
+  function applyStrings() {
+    document.querySelectorAll("[data-i18n]").forEach((el) => {
+      const key = el.getAttribute("data-i18n");
+      if (strings[key]) el.textContent = strings[key];
+    });
+    document.querySelectorAll("[data-color-key]").forEach((el) => {
+      const key = el.getAttribute("data-color-key");
+      if (strings[key]) el.title = strings[key];
+    });
+    if (strings["config.windowTitle"]) document.title = strings["config.windowTitle"];
+  }
+
+  function markSelected(container, color) {
+    container.querySelectorAll(".swatch").forEach((el) => {
+      el.classList.toggle("selected", (el.dataset.color || "") === (color || ""));
+    });
+  }
+
+  function markShape(shape) {
+    shapeSegmented.querySelectorAll("button").forEach((btn) => {
+      btn.classList.toggle("active", btn.dataset.shape === shape);
+    });
+    bgColorBlock.classList.toggle("visible", shape !== "none");
+  }
+
+  async function refreshPreview() {
+    const url = await window.configAPI.iconDataUrl(state);
+    previewDark.src = url;
+    previewLight.src = url;
+  }
+
+  async function persist() {
+    await window.configAPI.setTrayStyle(state);
+  }
+
+  async function populateLanguages() {
+    const locales = await window.configAPI.getLocales();
+    const current = await window.configAPI.getLocale();
+    languageSelect.innerHTML = "";
+    locales.forEach((locale) => {
+      const opt = document.createElement("option");
+      opt.value = locale.code;
+      opt.textContent = locale.label;
+      if (locale.code === current) opt.selected = true;
+      languageSelect.appendChild(opt);
+    });
+  }
+
+  async function init() {
+    strings = await window.configAPI.getStrings();
+    applyStrings();
+    await populateLanguages();
+
+    const style = await window.configAPI.getTrayStyle();
+    state.fgColor = style.fgColor || "#ffffff";
+    state.bgColor = style.bgColor;
+    state.bgShape = style.bgShape || "none";
+
+    markSelected(fgSwatchesEl, state.fgColor);
+    markSelected(bgSwatchesEl, state.bgColor);
+    markShape(state.bgShape);
+    fgCustom.value = state.fgColor;
+    if (state.bgColor) bgCustom.value = state.bgColor;
+
+    await refreshPreview();
+    autostartToggle.checked = await window.configAPI.getAutostart();
+  }
+
+  fgSwatchesEl.addEventListener("click", async (e) => {
+    const el = e.target.closest(".swatch");
+    if (!el) return;
+    state.fgColor = el.dataset.color;
+    fgCustom.value = state.fgColor;
+    markSelected(fgSwatchesEl, state.fgColor);
+    await refreshPreview();
+    await persist();
+  });
+
+  fgCustom.addEventListener("input", async () => {
+    state.fgColor = fgCustom.value;
+    markSelected(fgSwatchesEl, state.fgColor);
+    await refreshPreview();
+    await persist();
+  });
+
+  bgSwatchesEl.addEventListener("click", async (e) => {
+    const el = e.target.closest(".swatch");
+    if (!el) return;
+    state.bgColor = el.dataset.color || null;
+    markSelected(bgSwatchesEl, state.bgColor);
+    await refreshPreview();
+    await persist();
+  });
+
+  bgCustom.addEventListener("input", async () => {
+    state.bgColor = bgCustom.value;
+    markSelected(bgSwatchesEl, state.bgColor);
+    await refreshPreview();
+    await persist();
+  });
+
+  shapeSegmented.addEventListener("click", async (e) => {
+    const btn = e.target.closest("button");
+    if (!btn) return;
+    state.bgShape = btn.dataset.shape;
+    if (state.bgShape !== "none" && !state.bgColor) {
+      state.bgColor = "#10a37f";
+      bgCustom.value = state.bgColor;
+      markSelected(bgSwatchesEl, state.bgColor);
+    }
+    markShape(state.bgShape);
+    await refreshPreview();
+    await persist();
+  });
+
+  autostartToggle.addEventListener("change", async () => {
+    await window.configAPI.setAutostart(autostartToggle.checked);
+  });
+
+  languageSelect.addEventListener("change", async () => {
+    await window.configAPI.setLocale(languageSelect.value);
+    // A janela e recarregada pelo processo principal apos trocar o idioma.
+  });
+
+  init();
+</script>
+</body>
+</html>
