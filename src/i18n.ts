@@ -11,6 +11,9 @@ export const AVAILABLE_LOCALES: LocaleInfo[] = [
   { code: "es", label: "Español" },
   { code: "fr", label: "Français" },
   { code: "de", label: "Deutsch" },
+  { code: "zh", label: "中文 (简体)" },
+  { code: "ja", label: "日本語" },
+  { code: "ru", label: "Русский" },
 ];
 
 type Dict = Record<string, string>;
@@ -40,6 +43,7 @@ const en: Dict = {
   "config.startWithSystemHint": "Opens in background on login",
   "config.languageTitle": "Language",
   "config.languageHint": "Changes apply immediately.",
+  "config.madeBy": "Made by",
 
   "color.white": "White",
   "color.black": "Black",
@@ -74,6 +78,7 @@ const ptBR: Dict = {
   "config.startWithSystemHint": "Abre em segundo plano no login",
   "config.languageTitle": "Idioma",
   "config.languageHint": "As mudanças são aplicadas na hora.",
+  "config.madeBy": "Feito por",
 
   "color.white": "Branco",
   "color.black": "Preto",
@@ -108,6 +113,7 @@ const es: Dict = {
   "config.startWithSystemHint": "Se abre en segundo plano al iniciar sesión",
   "config.languageTitle": "Idioma",
   "config.languageHint": "Los cambios se aplican de inmediato.",
+  "config.madeBy": "Hecho por",
 
   "color.white": "Blanco",
   "color.black": "Negro",
@@ -142,6 +148,7 @@ const fr: Dict = {
   "config.startWithSystemHint": "S'ouvre en arrière-plan à la connexion",
   "config.languageTitle": "Langue",
   "config.languageHint": "Les changements s'appliquent immédiatement.",
+  "config.madeBy": "Créé par",
 
   "color.white": "Blanc",
   "color.black": "Noir",
@@ -176,6 +183,7 @@ const de: Dict = {
   "config.startWithSystemHint": "Öffnet sich beim Login im Hintergrund",
   "config.languageTitle": "Sprache",
   "config.languageHint": "Änderungen wirken sofort.",
+  "config.madeBy": "Entwickelt von",
 
   "color.white": "Weiß",
   "color.black": "Schwarz",
@@ -185,12 +193,120 @@ const de: Dict = {
   "color.red": "Rot",
 };
 
+const zh: Dict = {
+  "tray.open": "打开 ChatGPT",
+  "tray.newChat": "新对话",
+  "tray.reload": "重新加载",
+  "tray.settings": "设置...",
+  "tray.startWithSystem": "开机启动",
+  "tray.quit": "退出",
+
+  "config.windowTitle": "设置 - ChatGPT for Linux",
+  "config.header": "外观与设置",
+  "config.subheader": "自定义托盘图标和应用行为。",
+  "config.previewTitle": "预览",
+  "config.panelDark": "深色面板",
+  "config.panelLight": "浅色面板",
+  "config.strokeColorTitle": "图标颜色",
+  "config.customColor": "自定义颜色",
+  "config.bgTitle": "图标背景",
+  "config.shapeNone": "无",
+  "config.shapeSquare": "方形",
+  "config.shapeCircle": "圆形",
+  "config.systemTitle": "系统",
+  "config.startWithSystem": "开机启动",
+  "config.startWithSystemHint": "登录时在后台打开",
+  "config.languageTitle": "语言",
+  "config.languageHint": "更改立即生效。",
+  "config.madeBy": "开发者",
+
+  "color.white": "白色",
+  "color.black": "黑色",
+  "color.green": "绿色",
+  "color.blue": "蓝色",
+  "color.purple": "紫色",
+  "color.red": "红色",
+};
+
+const ja: Dict = {
+  "tray.open": "ChatGPTを開く",
+  "tray.newChat": "新しいチャット",
+  "tray.reload": "再読み込み",
+  "tray.settings": "設定...",
+  "tray.startWithSystem": "システム起動時に開始",
+  "tray.quit": "終了",
+
+  "config.windowTitle": "設定 - ChatGPT for Linux",
+  "config.header": "外観と設定",
+  "config.subheader": "トレイアイコンとアプリの動作をカスタマイズします。",
+  "config.previewTitle": "プレビュー",
+  "config.panelDark": "ダークパネル",
+  "config.panelLight": "ライトパネル",
+  "config.strokeColorTitle": "アイコンの色",
+  "config.customColor": "カスタムカラー",
+  "config.bgTitle": "アイコンの背景",
+  "config.shapeNone": "なし",
+  "config.shapeSquare": "四角",
+  "config.shapeCircle": "丸",
+  "config.systemTitle": "システム",
+  "config.startWithSystem": "システム起動時に開始",
+  "config.startWithSystemHint": "ログイン時にバックグラウンドで開きます",
+  "config.languageTitle": "言語",
+  "config.languageHint": "変更はすぐに適用されます。",
+  "config.madeBy": "開発者",
+
+  "color.white": "白",
+  "color.black": "黒",
+  "color.green": "緑",
+  "color.blue": "青",
+  "color.purple": "紫",
+  "color.red": "赤",
+};
+
+const ru: Dict = {
+  "tray.open": "Открыть ChatGPT",
+  "tray.newChat": "Новый чат",
+  "tray.reload": "Перезагрузить",
+  "tray.settings": "Настройки...",
+  "tray.startWithSystem": "Запускать с системой",
+  "tray.quit": "Выход",
+
+  "config.windowTitle": "Настройки - ChatGPT for Linux",
+  "config.header": "Внешний вид и настройки",
+  "config.subheader": "Настройте значок в трее и поведение приложения.",
+  "config.previewTitle": "Предпросмотр",
+  "config.panelDark": "Тёмная панель",
+  "config.panelLight": "Светлая панель",
+  "config.strokeColorTitle": "Цвет значка",
+  "config.customColor": "Свой цвет",
+  "config.bgTitle": "Фон значка",
+  "config.shapeNone": "Нет",
+  "config.shapeSquare": "Квадрат",
+  "config.shapeCircle": "Круг",
+  "config.systemTitle": "Система",
+  "config.startWithSystem": "Запускать с системой",
+  "config.startWithSystemHint": "Открывается в фоне при входе в систему",
+  "config.languageTitle": "Язык",
+  "config.languageHint": "Изменения применяются сразу.",
+  "config.madeBy": "Автор",
+
+  "color.white": "Белый",
+  "color.black": "Чёрный",
+  "color.green": "Зелёный",
+  "color.blue": "Синий",
+  "color.purple": "Фиолетовый",
+  "color.red": "Красный",
+};
+
 const DICTS: Record<string, Dict> = {
   en,
   "pt-BR": ptBR,
   es,
   fr,
   de,
+  zh,
+  ja,
+  ru,
 };
 
 export function getStrings(locale: string): Dict {

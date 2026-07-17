@@ -1,4 +1,4 @@
-import { BrowserWindow, app } from "electron";
+import { BrowserWindow, app, shell } from "electron";
 import path from "path";
 import Settings from "./settings";
 import { t, DEFAULT_LOCALE } from "./i18n";
@@ -34,9 +34,9 @@ export function openConfigWindow() {
 
   configWindow = new BrowserWindow({
     title: currentTitle(),
-    width: 460,
-    height: 800,
-    minWidth: 420,
+    width: 620,
+    height: 965,
+    minWidth: 460,
     minHeight: 600,
     backgroundColor: "#101010",
     webPreferences: {
@@ -47,6 +47,15 @@ export function openConfigWindow() {
   });
 
   configWindow.setMenu(null);
+
+  // Links da assinatura (GitHub) abrem no navegador padrao, nao navegam a janela
+  configWindow.webContents.on("will-navigate", (event, url) => {
+    if (url.startsWith("http")) {
+      event.preventDefault();
+      shell.openExternal(url);
+    }
+  });
+
   configWindow.loadFile(getDataPath("config.html"));
 
   configWindow.on("closed", () => {

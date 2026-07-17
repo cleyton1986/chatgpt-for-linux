@@ -107,6 +107,24 @@
     border: 1px solid #2a2a2a; border-radius: 8px; padding: 9px 10px;
     font-size: 13px; font-family: inherit; cursor: pointer;
   }
+
+  /* Assinatura */
+  .footer {
+    text-align: center; padding: 10px 0 4px;
+    font-size: 12px; color: #6b6b6b;
+  }
+  .footer a { color: #9a9a9a; text-decoration: none; }
+  .footer a:hover { color: #10a37f; text-decoration: underline; }
+  .footer .dot { margin: 0 6px; color: #444; }
+
+  .footer-logo {
+    display: flex; justify-content: center; padding: 18px 0 6px;
+  }
+  .footer-logo .logo-card {
+    background: #fff; border-radius: 12px; padding: 12px 20px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .footer-logo img { width: 180px; height: auto; display: block; }
 </style>
 </head>
 <body>
@@ -189,6 +207,19 @@
           <input type="checkbox" id="autostart" />
           <span class="track"></span>
         </label>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span data-i18n="config.madeBy">Made by</span>
+      <a href="https://github.com/cleyton1986" data-external-link>Cleyton Alves</a>
+      <span class="dot">·</span>
+      <a href="https://github.com/cleyton1986/chatgpt-for-linux" data-external-link>github.com/cleyton1986/chatgpt-for-linux</a>
+    </div>
+
+    <div class="footer-logo">
+      <div class="logo-card">
+        <img src="top.png" alt="ChatGPT" />
       </div>
     </div>
 
